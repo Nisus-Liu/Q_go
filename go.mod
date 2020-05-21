@@ -1,3 +1,3 @@
-module Q_go
+module github.com/wtgroup/Q_go
 
-go 1.14
+go 1.13
