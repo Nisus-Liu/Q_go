@@ -159,9 +159,36 @@ func (t *RBTree) RightRotate(x *Node) {
 func (t *RBTree) insertFixUp(z *Node) {
 	for z.Parent.Color == Red {
 		if z.Parent == z.Parent.Parent.Left {
-			// todo
+			y := z.Parent.Parent.Right // z的叔节点
+			if y.Color == Red {
+				z.Parent.Color = Black
+				y.Color = Black
+				z.Parent.Parent.Color = Red
+				z = z.Parent.Parent
+			}else if z == z.Parent.Right { // 先左旋, 再右旋
+				z = z.Parent
+				t.LeftRotate(z)
+			}
+			z.Parent.Color = Black
+			z.Parent.Parent.Color = Red
+			t.RightRotate(z.Parent.Parent)
+		}else { // 对称
+			y := z.Parent.Parent.Left
+			if y.Color == Red {
+				z.Parent.Color = Black
+				y.Color = Black
+				z.Parent.Parent.Color = Red
+				z = z.Parent.Parent
+			}else if z == z.Parent.Left {
+				z = z.Parent
+				t.RightRotate(z)
+			}
+			z.Parent.Color = Black
+			z.Parent.Parent.Color = Red
+			t.LeftRotate(z.Parent.Parent)
 		}
 	}
+	t.root.Color = Black
 }
 
 func (t * RBTree) String() string {
